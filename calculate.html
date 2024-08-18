@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>計算器 - 線上分數與表達式計算工具</title>
+    <meta name="description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算，以及支援基本算術表達式計算、對數(log)計算與整除(//)計算。">
+    <meta name="keywords" content="計算器, 分數計算, 表達式計算, log計算, 整除計算, 對數計算, 線上工具">
+    <meta name="robots" content="index, follow">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .container {
+            padding: 10px;
+            margin: 0 auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.75rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .result {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .popup {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .popup-header {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .popup-content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .popup-content li {
+            margin-bottom: 8px;
+        }
+
+        .popup-overlay {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup-button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .popup-button:hover {
+            background-color: #0056b3;
+        }
+
+        .close-popup {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #DC3545;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .close-popup:hover {
+            background-color: #c82333;
+        }
+
+        #history {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        #history p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .clear-history {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #FF6347;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .clear-history:hover {
+            background-color: #ff4500;
+        }
+
+        .save-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .save-button:hover {
+            background-color: #218838;
+        }
+
+        @media (min-width: 600px) {
+            .container {
+                max-width: 600px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-group {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .form-group label {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            .form-group input {
+                flex: 2;
+            }
+        }
+
+        @media (min-width: 800px) {
+            .container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>計算器</h1>
+    </header>
+    <main class="container">
+        <section>
+            <h2>分數計算</h2>
+            <form id="scores-form">
+                <div class="form-group">
+                    <label for="scores-string">請輸入分數列表，以半形逗號隔開：</label>
+                    <input id="scores-string" type="text" placeholder="例如 &quot;69,78,87,3993&quot;" />
+                </div>
+                <button type="button" class="save-button" onclick="saveScoreResults()">儲存</button>
+            </form>
+            <div class="result">
+                總分是：<span id="score-sum"></span><br />
+                平均分數是：<span id="score-average"></span><br />
+                最大分數是：<span id="score-max"></span><br />
+                最小分數是：<span id="score-min"></span>
+            </div>
+        </section>
+
+        <section>
+            <h2>連續計算</h2>
+            <form id="continuous-calc-form">
+                <div class="form-group">
+                    <label for="expression">請輸入計算表達式：</label>
+                    <input id="expression" type="text" placeholder="例如 log(100, 10) + 9 // 4" />
+                </div>
+                <button type="button" class="save-button" onclick="saveExpressionResult()">儲存</button>
+            </form>
+            <div class="result">
+                計算結果：<span id="expression-result"></span>
+            </div>
+        </section>
+
+        <section>
+            <h2>計算歷史</h2>
+            <div id="history"></div>
+            <button class="clear-history" onclick="clearHistory()">清空歷史紀錄</button>
+        </section>
+
+        <button class="popup-button" onclick="showPopup()">顯示運算子使用方法</button>
+    </main>
+    <footer>
+        <p>&copy; 2024 計算器</p>
+    </footer>
+
+    <!-- 彈出視窗的 HTML 代碼 -->
+    <div class="popup-overlay" onclick="hidePopup()" style="display: none;"></div>
+    <div class="popup" style="display: none;">
+        <div class="popup-header">運算子使用方法</div>
+        <div class="popup-content">
+            <ul>
+                <li><strong>加法 +</strong>: 將兩個數字相加。例如 <code>2 + 3</code> 結果為 <code>5</code>。</li>
+                <li><strong>減法 -</strong>: 將一個數字從另一個數字中減去。例如 <code>5 - 3</code> 結果為 <code>2</code>。</li>
+                <li><strong>乘法 *</strong>: 將兩個數字相乘。例如 <code>4 * 5</code> 結果為 <code>20</code>。</li>
+                <li><strong>除法 /</strong>: 將一個數字除以另一個數字。例如 <code>10 / 2</code> 結果為 <code>5</code>。</li>
+                <li><strong>起餘數 %</strong>: 將一個數字除以另一個數字的餘數。例如 <code>10 % 2</code> 結果為 <code>0</code>。</li>
+                <li><strong>整除 //</strong>: 求一個數字除以另一個數字後向下取整的結果。例如 <code>11 // 2</code> 結果為 <code>5</code>。</li>
+                <li><strong>次方 **</strong>: 求一個數字的幾次方。例如 <code>2 ** 3</code> 結果為 <code>8</code>。</li>
+                <li><strong>對數 log(x, y)</strong>: 計算以 <code>x</code> 為底數的 <code>y</code> 的對數。</li>
+            </ul>
+        </div>
+        <button class="close-popup" onclick="hidePopup()">關閉</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let scoresStringInput = document.querySelector("#scores-string");
+            let scoreSumSpan = document.querySelector("#score-sum");
+            let scoreAverageSpan = document.querySelector("#score-average");
+            let scoreMaxSpan = document.querySelector("#score-max");
+            let scoreMinSpan = document.querySelector("#score-min");
+
+            let expressionInput = document.querySelector("#expression");
+            let expressionResultSpan = document.querySelector("#expression-result");
+
+            let historyDiv = document.querySelector("#history");
+            let calculationHistory = []; // 用於存儲歷史記錄
+
+            const updateHistory = function (calculation) {
+                calculationHistory.push(calculation);
+                let historyHTML = calculationHistory.map(entry => `<p>${entry}</p>`).join("");
+                historyDiv.innerHTML = historyHTML;
+            };
+
+            const saveScoreResults = function () {
+                let scoresString = scoresStringInput.value;
+                let scoreStringArray = scoresString.split(",");
+                let scoreArray = [];
+                for (let scoreString of scoreStringArray) {
+                    let score = parseFloat(scoreString);
+                    if (!isNaN(score)) {
+                        scoreArray.push(score);
+                    }
+                }
+
+                if (scoreArray.length === 0) {
+                    scoreSumSpan.textContent = "0 分";
+                    scoreAverageSpan.textContent = "0 分";
+                    scoreMaxSpan.textContent = "N/A";
+                    scoreMinSpan.textContent = "N/A";
+                    return;
+                }
+
+                let scoreSum = scoreArray.reduce((sum, score) => sum + score, 0);
+                scoreSumSpan.textContent = `${scoreSum} 分`;
+
+                let scoreAverage = scoreSum / scoreArray.length;
+                scoreAverageSpan.textContent = `${scoreAverage.toFixed(2)} 分`;
+
+                let scoreMax = Math.max(...scoreArray);
+                let scoreMin = Math.min(...scoreArray);
+                scoreMaxSpan.textContent = `${scoreMax} 分`;
+                scoreMinSpan.textContent = `${scoreMin} 分`;
+
+                // 保存結果到歷史記錄
+                updateHistory(`分數列表: ${scoresString} => 總分: ${scoreSum}, 平均: ${scoreAverage.toFixed(2)}, 最大: ${scoreMax}, 最小: ${scoreMin}`);
+            };
+
+            const saveExpressionResult = function () {
+                let expression = expressionInput.value;
+
+                try {
+                    let modifiedExpression = expression
+                        .replace(/log\(([^,]+),\s*([^)]+)\)/g, "Math.log($2) / Math.log($1)")
+                        .replace(/(\d+)\s*\/\/\s*(\d+)/g, "Math.floor($1 / $2)");
+
+                    let result = eval(modifiedExpression);
+                    expressionResultSpan.textContent = `${result}`;
+
+                    // 保存結果到歷史記錄
+                    updateHistory(`表達式: ${expression} => 結果: ${result}`);
+                } catch (e) {
+                    expressionResultSpan.textContent = "無效的表達式";
+                    updateHistory(`表達式: ${expression} => 結果: 無效的表達式`);
+                }
+            };
+
+            // 清空歷史記錄的函數
+            const clearHistory = function () {
+                calculationHistory = []; // 清空歷史記錄陣列
+                historyDiv.innerHTML = ""; // 清空歷史記錄的顯示內容
+            };
+
+            // 綁定事件
+            document.querySelector("#scores-form .save-button").addEventListener("click", saveScoreResults);
+            document.querySelector("#continuous-calc-form .save-button").addEventListener("click", saveExpressionResult);
+        });
+
+        function showPopup() {
+            document.querySelector(".popup").style.display = "block";
+            document.querySelector(".popup-overlay").style.display = "block";
+        }
+
+        function hidePopup() {
+            document.querySelector(".popup").style.display = "none";
+            document.querySelector(".popup-overlay").style.display = "none";
+        }
+
+        // 清空歷史記錄的函數
+        function clearHistory() {
+            document.querySelector("#history").innerHTML = "";
+            calculationHistory = []; // 清空歷史記錄陣列
+        }
+    </script>
+</body>
+
+</html>
+
+
