@@ -3,30 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>計算器 - 快樂又開心的計算工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>計算器 - 快樂又開心的計算工具</title>
 
-<!-- SEO Meta Tags -->
-<meta name="description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算，以及支援基本算術表達式計算、對數(log)計算與整除(//)計算。">
-<meta name="keywords" content="快樂又開心的計算工具,計算器, 分數計算, 表達式計算, log計算, 整除計算, 對數計算, 線上工具">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://iamsvito.github.io/demo/demo10.html"> <!-- 確保使用您網站的實際URL -->
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算，以及支援基本算術表達式計算、對數(log)計算與整除(//)計算。">
+    <meta name="keywords" content="快樂又開心的計算工具,計算器, 分數計算, 表達式計算, log計算, 整除計算, 對數計算, 線上工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://iamsvito.github.io/demo/demo10.html">
 
-<!-- Social Media Meta Tags -->
-<meta property="og:title" content="計算器 - 線上分數與表達式計算工具">
-<meta property="og:description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算。">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://iamsvito.github.io/demo/demo10.html">
-<meta property="og:image" content="https://ibb.co/gT3yx64"> <!-- 修正的圖片URL -->
+    <!-- Social Media Meta Tags -->
+    <meta property="og:title" content="計算器 - 線上分數與表達式計算工具">
+    <meta property="og:description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://iamsvito.github.io/demo/demo10.html">
+    <meta property="og:image" content="https://ibb.co/gT3yx64">
 
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="計算器 - 線上分數與表達式計算工具">
-<meta name="twitter:description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算。">
-<meta name="twitter:image" content="https://ibb.co/gT3yx64"> <!-- 修正的圖片URL -->
-
-<!-- Additional SEO Best Practices -->
-<link rel="stylesheet" href="styles.css">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="計算器 - 線上分數與表達式計算工具">
+    <meta name="twitter:description" content="這是一個簡單的線上計算器，提供分數總和、平均、最大和最小值計算。">
+    <meta name="twitter:image" content="https://ibb.co/gT3yx64">
 
     <style>
         body {
@@ -85,36 +82,42 @@
             font-size: 1.2rem;
             margin: 10px 0;
         }
+
         .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        max-width: 500px;
-        z-index: 1000;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    .popup-content {
-        max-height: 70vh;
-        overflow-y: auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-    }
-    .close-popup {
-        display: block;
-        margin: 20px auto 0;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .close-popup:hover {
-        background-color: #0056b3;
-    }
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* 默認隱藏 */
+        }
+        
+        .popup-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        .close-popup {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .close-popup:hover {
+            background-color: #0056b3;
+        }
+
         .popup-header {
             font-size: 1.25rem;
             margin-bottom: 10px;
@@ -168,6 +171,7 @@
             text-align: center;
             font-size: 1rem;
         }
+
         .copy-button {
             margin-top: 10px;
             padding: 10px 15px;
@@ -228,14 +232,16 @@
     </header>
     <main class="container">
         <section>
+            <h3 style="color: blue;">
+                *圓周率: π 或 Pi 或 pi<br>
+                *歐拉常數: e
+            </h3>
             <h2>分數計算</h2>
             <form id="scores-form">
                 <div class="form-group">
                     <label for="scores-string">請輸入分數列表，以半形逗號隔開：</label>
                     <input id="scores-string" type="text" placeholder="例如 &quot;69,78,87,3993&quot;" />
                 </div>
-                <button id="scores-paste-button" class="copy-button">貼上</button>
-                <span id="scores-paste-message" style="display:none; color:green;">已貼上!</span>
             </form>
             <div class="result">
                 總分是：<span id="score-sum"></span><br />
@@ -244,12 +250,12 @@
                 最小分數是：<span id="score-min"></span><br />
                 個數是：<span id="score-count"></span><br />
                 中位數是：<span id="score-median"></span><br />
-                變異數是：<span id="score-variance"></span>
+                變異數是：<span id="score-variance"></span><br />
+                標準差是：<span id="score-standard-deviation"></span> <!-- 新增標準差的顯示 -->
             </div>
             <button id="scores-copy-button" class="copy-button">複製結果</button>
             <span id="scores-copy-message" style="display:none; color:green;">已複製!</span>
         </section>
-
         <section>
             <h2>連續計算</h2>
             <form id="continuous-calc-form">
@@ -257,8 +263,6 @@
                     <label for="expression">請輸入計算表達式：</label>
                     <input id="expression" type="text" placeholder="例如 1**8 + 9 // 4" />
                 </div>
-                <button id="expression-paste-button" class="copy-button">貼上</button>
-                <span id="expression-paste-message" style="display:none; color:green;">已貼上!</span>
             </form>
             <div class="result">
                 計算結果：<span id="expression-result"></span>
@@ -266,10 +270,11 @@
             <button id="expression-copy-button" class="copy-button">複製結果</button>
             <span id="expression-copy-message" style="display:none; color:green;">已複製!</span>
         </section>
-        <button class="popup-button" onclick="showPopup()">顯示運算子使用方法</button>
-
         <section>
-            <h2>Log 計算對數: log(x, base)</h2>
+            <button class="popup-button" onclick="showPopup()">顯示連續計算的運算子使用方法</button>
+        </section>
+        <section>
+            <h2>Log 計算對數: logx(base)</h2>
             <form id="log-calc-form">
                 <div class="form-group">
                     <label for="log-base">請輸入底數x：</label>
@@ -286,9 +291,10 @@
             <button id="log-copy-button" class="copy-button">複製結果</button>
             <span id="log-copy-message" style="display:none; color:green;">已複製!</span>
         </section>
+
         <div>
             <h2>三角函數計算</h2>
-            <select id="trig-function">
+            <select id="trig-function" title="選擇三角函數">
                 <option value="sin">sin</option>
                 <option value="cos">cos</option>
                 <option value="tan">tan</option>
@@ -297,332 +303,369 @@
                 <option value="cot">cot</option>
             </select>
             <input type="text" id="angle-input" placeholder="輸入角度或弧度">
-            <button id="trig-paste-button" class="copy-button">貼上</button>
-            <span id="trig-paste-message" style="display:none; color:green;">已貼上!</span>
-            <select id="angle-unit">
+            <select id="angle-unit" title="選擇角度單位">
                 <option value="degree">度度量</option>
                 <option value="radian">弧度量</option>
             </select>
             <p>結果：<span id="trig-result">0</span></p>
             <button class="copy-button" id="copy-button">複製結果</button>
             <span id="copy-message" style="display:none;">已複製!</span>
-        </div>       
+        </div>  
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2 class="popup-header">運算子使用方法</h2>
+                <ul id="operator-list"></ul>
+                <div>
+                    <button id="prev-page" onclick="changePage(-1)">上一頁</button>
+                    <button id="next-page" onclick="changePage(1)">下一頁</button>
+                </div>
+                <button class="close-popup" onclick="closePopup()">關閉</button>
+            </div>
+        </div>     
     </main>
     <footer>
         <p>&copy; 快樂又開心的計算機</p>
     </footer>
 
-    <div id="popup" class="popup" style="display:none;">
-        <div class="popup-content" style="max-height: 70vh; overflow-y: auto; padding: 20px; background-color: #fff; border-radius: 10px;">
-            <h2 class="popup-header">運算子使用方法</h2>
-            <ul>
-                <li>加法: +</li>
-                <li>減法: -</li>
-                <li>乘法: *</li>
-                <li>除法: /</li>
-                <li>整除: //</li>
-                <li>餘數: %</li>
-                <li>次方: **</li>
-                <li>括號: ()</li>
-                <li>絕對值: abs()</li>
-                <li>圓周率: π 或 Pi 或 pi</li>
-                <li>邏輯「或」: ||</li>
-                <li>邏輯「和」: &&</li>
-                <li>大於或等於: >=</li>
-                <li>小於或等於: <=</li>
-                <li>大於: ></li>
-                <li>少於: <</li>
-                <li>不等於: !=</li>
-                <li>等於: ==</li>
-                <li><strong style="color:blue;">當使用 // 時，記得運算子前後要加空格</strong></li>
-                <li><strong style="color:blue;">推薦使用英文輸入法，較不會有半全形問題</strong></li>
-            </ul>
-            <button class="close-popup" onclick="closePopup()">關閉</button>
-        </div>
-    </div>
-    <div id="popup-overlay" class="popup-overlay" style="display:none;"></div>
+    
     <button onclick="resetPage()" style="display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px;">重製</button>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    // 处理 π 的通用替换函数
-    function replacePi(input) {
-        return input.replace(/pi|π/gi, Math.PI);
+            // 处理 π 的通用替换函数
+            function replacePi(input) {
+                return input.replace(/pi|π/gi, Math.PI);
+            }
+            // 分數計算
+            let scoresInput = document.querySelector("#scores-string");
+            let scoreSumSpan = document.querySelector("#score-sum");
+            let scoreAverageSpan = document.querySelector("#score-average");
+            let scoreMaxSpan = document.querySelector("#score-max");
+            let scoreMinSpan = document.querySelector("#score-min");
+            let scoreCountSpan = document.querySelector("#score-count");
+            let scoreMedianSpan = document.querySelector("#score-median");
+            let scoreVarianceSpan = document.querySelector("#score-variance");
+            let scoreStandardDeviationSpan = document.querySelector("#score-standard-deviation");
+
+            const calculateScores = function () {
+                // 替換 π 為 Math.PI 並進行計算
+                let scores = replacePi(scoresInput.value)
+                    .replace(/\be\b/g, Math.E)  // 將 e 替換為 Math.E 的數值
+                    .split(',')
+                    .map(str => parseFloat(str))  // 將字符串轉換為浮點數
+                    .filter(n => !isNaN(n));      // 過濾掉無效的數字
+
+            if (scores.length === 0) {
+                console.error('無效的輸入，請重新輸入分數');
+                return;
     }
-    const pasteText = function(inputElementId, messageElementId) {
-                navigator.clipboard.readText().then((text) => {
-                    document.getElementById(inputElementId).value = text;
-                    const messageElement = document.getElementById(messageElementId);
-                    messageElement.style.display = "inline";
-                    setTimeout(() => {
-                        messageElement.style.display = "none";
-                    }, 2000);
-                }).catch((err) => {
-                    console.error('貼上失敗: ', err);
-                });
+                let sum = scores.reduce((a, b) => a + b, 0);
+                let average = sum / scores.length;
+                let max = Math.max(...scores);
+                let min = Math.min(...scores);
+                let count = scores.length;
+                let sortedScores = scores.slice().sort((a, b) => a - b);
+                let median = sortedScores.length % 2 === 0 ?
+                    (sortedScores[sortedScores.length / 2 - 1] + sortedScores[sortedScores.length / 2]) / 2 :
+                    sortedScores[(sortedScores.length - 1) / 2];
+                let variance = scores.reduce((acc, val) => acc + (val - average) ** 2, 0) / scores.length;
+                let standardDeviation = Math.sqrt(variance);
+
+                scoreSumSpan.textContent = sum;
+                scoreAverageSpan.textContent = average.toFixed(2);
+                scoreMaxSpan.textContent = max;
+                scoreMinSpan.textContent = min;
+                scoreCountSpan.textContent = count;
+                scoreMedianSpan.textContent = median;
+                scoreVarianceSpan.textContent = variance.toFixed(2);
+                scoreStandardDeviationSpan.textContent = standardDeviation.toFixed(2); // 顯示標準差
             };
-    
-    // 分数计算
-    let scoresInput = document.querySelector("#scores-string");
-    let scoreSumSpan = document.querySelector("#score-sum");
-    let scoreAverageSpan = document.querySelector("#score-average");
-    let scoreMaxSpan = document.querySelector("#score-max");
-    let scoreMinSpan = document.querySelector("#score-min");
-    let scoreCountSpan = document.querySelector("#score-count");
-    let scoreMedianSpan = document.querySelector("#score-median");
-    let scoreVarianceSpan = document.querySelector("#score-variance");
-    const copyScoresResult = function () {
-        const result = `總分：${scoreSumSpan.textContent}\n平均分數：${scoreAverageSpan.textContent}\n最大分數：${scoreMaxSpan.textContent}\n最小分數：${scoreMinSpan.textContent}\n個數：${scoreCountSpan.textContent}\n中位數：${scoreMedianSpan.textContent}\n變異數：${scoreVarianceSpan.textContent}`;
 
-        navigator.clipboard.writeText(result).then(() => {
-            const copyMessage = document.getElementById("scores-copy-message");
-            copyMessage.style.display = "inline";
-            setTimeout(() => {
-                copyMessage.style.display = "none";
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
-    };
-
-    const calculateScores = function () {
-        // 替换 π 为 Math.PI 并进行计算
-        let scores = replacePi(scoresInput.value).split(',').map(Number).filter(n => !isNaN(n));
-        let sum = scores.reduce((a, b) => a + b, 0);
-        let average = sum / scores.length;
-        let max = Math.max(...scores);
-        let min = Math.min(...scores);
-        let count = scores.length;
-        let sortedScores = scores.slice().sort((a, b) => a - b);
-        let median = sortedScores.length % 2 === 0 ?
-            (sortedScores[sortedScores.length / 2 - 1] + sortedScores[sortedScores.length / 2]) / 2 :
-            sortedScores[(sortedScores.length - 1) / 2];
-        let variance = scores.reduce((acc, val) => acc + (val - average) ** 2, 0) / scores.length;
-
-        scoreSumSpan.textContent = sum;
-        scoreAverageSpan.textContent = average.toFixed(2);
-        scoreMaxSpan.textContent = max;
-        scoreMinSpan.textContent = min;
-        scoreCountSpan.textContent = count;
-        scoreMedianSpan.textContent = median;
-        scoreVarianceSpan.textContent = variance.toFixed(2);
-    };
-    scoresInput.addEventListener("input", calculateScores);
-    document.getElementById("scores-copy-button").addEventListener("click", function() {
+            const copyScoresResult = function () {
                 const result = `總分：${scoreSumSpan.textContent}\n平均分數：${scoreAverageSpan.textContent}\n最大分數：${scoreMaxSpan.textContent}\n最小分數：${scoreMinSpan.textContent}\n個數：${scoreCountSpan.textContent}\n中位數：${scoreMedianSpan.textContent}\n變異數：${scoreVarianceSpan.textContent}`;
                 navigator.clipboard.writeText(result).then(() => {
-                    document.getElementById("scores-copy-message").style.display = "inline";
+                    const copyMessage = document.getElementById("scores-copy-message");
+                    copyMessage.style.display = "inline";
                     setTimeout(() => {
-                        document.getElementById("scores-copy-message").style.display = "none";
+                        copyMessage.style.display = "none";
+                    }, 2000);
+                }).catch(err => {
+                    console.error('複製失敗: ', err);
+                });
+            };
+
+            scoresInput.addEventListener("input", calculateScores);
+            document.getElementById("scores-copy-button").addEventListener("click", copyScoresResult);
+
+            // 連續計算
+            let expressionInput = document.querySelector("#expression");
+            let expressionResultSpan = document.querySelector("#expression-result");
+
+            const calculateExpression = function () {
+                let expression = replacePi(expressionInput.value).replace(/\be\b/g, "Math.E");
+
+                try {
+                    let modifiedExpression = expression.replace(/abs\(([^)]+)\)/g, "Math.abs($1)");
+                    modifiedExpression = modifiedExpression.replace(/(\S+)\s*\/\/\s*(\S+)/g, "(Math.floor($1 / $2))");
+
+                    let result = new Function("Math", `return ${modifiedExpression};`)(Math);
+                    expressionResultSpan.textContent = `${result}`;
+                } catch (e) {
+                    expressionResultSpan.textContent = "無效的表達式";
+                    console.error('無效表達式: ', e);
+                }
+            };
+
+            const copyExpressionResult = function () {
+                const expressionResult = expressionResultSpan.textContent;
+                navigator.clipboard.writeText(`計算結果：${expressionResult}`).then(() => {
+                    const copyMessage = document.getElementById("expression-copy-message");
+                    copyMessage.style.display = "inline";
+                    setTimeout(() => {
+                        copyMessage.style.display = "none";
+                    }, 2000);
+                }).catch(err => {
+                    console.error('複製失敗: ', err);
+                });
+            };
+
+            expressionInput.addEventListener("input", calculateExpression);
+            document.getElementById("expression-copy-button").addEventListener("click", copyExpressionResult);
+
+            // Log 計算
+            let logBaseInput = document.querySelector("#log-base");
+            let logValueInput = document.querySelector("#log-value");
+            let logResultSpan = document.querySelector("#log-result");
+
+            const calculateLog = function () {
+                let base = replacePi(logBaseInput.value).replace(/\be\b/g, Math.E);   // 將 e 替換為 Math.E 的數值
+                let value = replacePi(logValueInput.value).replace(/\be\b/g, Math.E); // 將 e 替換為 Math.E 的數值
+
+                let baseNum = parseFloat(base);
+                let valueNum = parseFloat(value);
+
+                if (baseNum === 1 && valueNum === 1) {
+                    logResultSpan.textContent = "1 的任何次方都等於 1,因此log(1,1)是未定义的";
+                } else if (!isNaN(baseNum) && !isNaN(valueNum) && baseNum > 0 && valueNum > 0) {
+                    let result = Math.log(valueNum) / Math.log(baseNum);
+                    logResultSpan.textContent = result.toFixed(4);
+                } else {
+                    logResultSpan.textContent = "無效的輸入";
+                }
+            };
+
+            logBaseInput.addEventListener("input", calculateLog);
+            logValueInput.addEventListener("input", calculateLog);
+            document.getElementById("log-copy-button").addEventListener("click", function () {
+                const logResult = logResultSpan.textContent;
+                navigator.clipboard.writeText(`Log 計算結果：${logResult}`).then(() => {
+                    const copyMessage = document.getElementById("log-copy-message");
+                    copyMessage.style.display = "inline";
+                    setTimeout(() => {
+                        copyMessage.style.display = "none";
                     }, 2000);
                 }).catch(err => {
                     console.error('複製失敗: ', err);
                 });
             });
-
-            document.getElementById("scores-paste-button").addEventListener("click", function() {
-                pasteText("scores-string", "scores-paste-message");
-            });
-
-    // 连续计算
-    let expressionInput = document.querySelector("#expression");
-    let expressionResultSpan = document.querySelector("#expression-result");
-    document.getElementById("expression-paste-button").addEventListener("click", function() {
-    pasteText("expression", "expression-paste-message");
-});
-    const calculateExpression = function () {
-        let expression = replacePi(expressionInput.value);
-
-        try {
-            // 先处理所有 abs() 表达式
-            let modifiedExpression = expression.replace(/abs\(([^)]+)\)/g, "Math.abs($1)");
-
-            // 将 "//" 替换为 Math.floor 的函数调用形式，但保留原始的运算顺序
-            modifiedExpression = modifiedExpression.replace(/(\S+)\s*\/\/\s*(\S+)/g, "(Math.floor($1 / $2))");
-
-            // 使用 Function 来执行解析后的表达式
-            let result = new Function("Math", `return ${modifiedExpression};`)(Math);
-
-            expressionResultSpan.textContent = `${result}`;
-        } catch (e) {
-            expressionResultSpan.textContent = "无效的表达式";
-        }
-    };
-
-    const copyExpressionResult = function () {
-        const expressionResult = expressionResultSpan.textContent;
-
-        navigator.clipboard.writeText(`計算結果：${expressionResult}`).then(() => {
-            const copyMessage = document.getElementById("expression-copy-message");
-            copyMessage.style.display = "inline";
-            setTimeout(() => {
-                copyMessage.style.display = "none";
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
-    };
-
-    expressionInput.addEventListener("input", calculateExpression);
-    document.getElementById("expression-copy-button").addEventListener("click", copyExpressionResult);
-
-    // Log 计算
-    let logBaseInput = document.querySelector("#log-base");
-    let logValueInput = document.querySelector("#log-value");
-    let logResultSpan = document.querySelector("#log-result");    
-    const calculateLog = function () {
-    // 替换 pi 或 π
-    let base = replacePi(logBaseInput.value);
-    let value = replacePi(logValueInput.value);
-
-    // 将字符串转换为浮点数进行计算
-    let baseNum = parseFloat(base);
-    let valueNum = parseFloat(value);
-
-    if (baseNum === 1 && valueNum === 1) {
-        logResultSpan.textContent = "1 的任何次方都等於 1,因此log(1,1)是未定义的";
-    } else if (!isNaN(baseNum) && !isNaN(valueNum) && baseNum > 0 && valueNum > 0) {
-        let result = Math.log(valueNum) / Math.log(baseNum);
-        logResultSpan.textContent = result.toFixed(4);
-    } else {
-        logResultSpan.textContent = "無效的輸入";
-    }
-};
-    logBaseInput.addEventListener("input", calculateLog);
-    logValueInput.addEventListener("input", calculateLog);
-    document.getElementById("log-copy-button").addEventListener("click", function () {
-        const logResult = logResultSpan.textContent;
-
-        navigator.clipboard.writeText(`Log 計算結果：${logResult}`).then(() => {
-            const copyMessage = document.getElementById("log-copy-message");
-            copyMessage.style.display = "inline";
-            setTimeout(() => {
-                copyMessage.style.display = "none";
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
-    });
-    
-    // 安全地计算表达式
-    function safeEval(expression) {
-        try {
-            // 替换 π 并计算表达式
-            return eval(replacePi(expression));
-        } catch (e) {
-            return NaN; // 如果计算失败，返回 NaN
-        }
-    }
-
-    // 三角函数计算
-    let trigFunctionSelect = document.getElementById("trig-function");
-    let angleInput = document.getElementById("angle-input");
-    let angleUnitSelect = document.getElementById("angle-unit");
-    let trigResultSpan = document.getElementById("trig-result");
-document.getElementById("trig-paste-button").addEventListener("click", function() {
-    pasteText("angle-input", "trig-paste-message"); // 貼到角度輸入框中
-});
-
-    const calculateTrigonometry = function () {
-    let functionSelect = trigFunctionSelect.value;
-    let angleInputValue = angleInput.value;
-    let unit = angleUnitSelect.value;
-
-    let angle = safeEval(angleInputValue); // 使用 safeEval 解析表达式
-    let angleInRadians;
-
-    // 將角度轉換為弧度
-    if (unit === "degree") {
-        angleInRadians = angle * (Math.PI / 180);
-    } else {
-        angleInRadians = angle;
-    }
-
-    let result;
-
-    // 偵測 tan 在度數和弧度下未定義的情況
-    const isTanUndefinedInDegrees = functionSelect === "tan" && angle % 180 === 90 && unit === "degree";
-    const isTanUndefinedInRadians = functionSelect === "tan" && Math.abs((angleInRadians % Math.PI) - (Math.PI / 2)) < 1e-10;
-
-    // 偵測 cot 在度數和弧度下未定義的情況
-    const isCotUndefinedInDegrees = functionSelect === "cot" && angle % 180 === 0 && unit === "degree";
-    const isCotUndefinedInRadians = functionSelect === "cot" && Math.abs(angleInRadians % Math.PI) < 1e-10;
-
-    // 處理無效值
-    if (isTanUndefinedInDegrees || isTanUndefinedInRadians) {
-        result = "無效的值 (tan π/2 或 90度 未定義)";
-    } else if (isCotUndefinedInDegrees || isCotUndefinedInRadians) {
-        result = "無效的值 (cot 0 或 180度 未定義)";
-    } else {
-        // 根據選擇的三角函數計算結果
-        switch (functionSelect) {
-            case "sin":
-                result = Math.sin(angleInRadians);
-                break;
-            case "cos":
-                result = Math.cos(angleInRadians);
-                break;
-            case "tan":
-                result = Math.tan(angleInRadians);
-                break;
-            case "csc":
-                result = 1 / Math.sin(angleInRadians);
-                break;
-            case "sec":
-                result = 1 / Math.cos(angleInRadians);
-                break;
-            case "cot":
-                // 當角度為 π 或 0 時，cot 未定義
-                result = Math.tan(angleInRadians) === 0 ? "無限大 (Infinity)" : 1 / Math.tan(angleInRadians);
-                break;
-            default:
-                result = "無效的函數";
-                break;
-        }
-
-        // 四捨五入數值結果
-        if (typeof result === "number") {
-            result = parseFloat(result.toFixed(10));
-
-            // 處理非常接近 0 的值
-            if (Math.abs(result) < 1e-10) {
-                result = 0.0000000000;
+        
+            // 安全地計算表達式
+            function safeEval(expression) {
+                try {
+                    return eval(replacePi(expression));
+                } catch (e) {
+                    return NaN;
+                }
             }
-        }
-    }
 
-    trigResultSpan.textContent = result;
-};
+            // 三角函數計算
+            let trigFunctionSelect = document.getElementById("trig-function");
+            let angleInput = document.getElementById("angle-input");
+            let angleUnitSelect = document.getElementById("angle-unit");
+            let trigResultSpan = document.getElementById("trig-result");
 
+            const calculateTrigonometry = function () {
+                let functionSelect = trigFunctionSelect.value;
+                let angleInputValue = angleInput.value.replace(/\be\b/g, "Math.E"); // 支援 e
+                let unit = angleUnitSelect.value;
 
-    angleInput.addEventListener("input", calculateTrigonometry);
-    trigFunctionSelect.addEventListener("change", calculateTrigonometry);
-    angleUnitSelect.addEventListener("change", calculateTrigonometry);
+                let angle = safeEval(angleInputValue);
+                let angleInRadians;
 
-    document.getElementById("copy-button").addEventListener("click", function() {
-        let resultText = trigResultSpan.textContent;
-        navigator.clipboard.writeText(resultText).then(function() {
-            let copyMessage = document.getElementById("copy-message");
-            copyMessage.style.display = "inline";
-            setTimeout(function() {
-                copyMessage.style.display = "none";
-            }, 2000);
-        }).catch(function(err) {
-            console.error('複製失敗: ', err);
+                if (unit === "degree") {
+                    angleInRadians = angle * (Math.PI / 180);
+                } else {
+                    angleInRadians = angle;
+                }
+
+                let result;
+
+                // 偵測 tan 在度數和弧度下未定義的情況
+                const isTanUndefinedInDegrees = functionSelect === "tan" && angle % 180 === 90 && unit === "degree";
+                const isTanUndefinedInRadians = functionSelect === "tan" && Math.abs((angleInRadians % Math.PI) - (Math.PI / 2)) < 1e-10;
+
+                // 偵測 cot 在度數和弧度下未定義的情況
+                const isCotUndefinedInDegrees = functionSelect === "cot" && angle % 180 === 0 && unit === "degree";
+                const isCotUndefinedInRadians = functionSelect === "cot" && Math.abs(angleInRadians % Math.PI) < 1e-10;
+
+                if (isTanUndefinedInDegrees || isTanUndefinedInRadians) {
+                    result = "無效的值 (tan π/2 或 90度 未定義)";
+                } else if (isCotUndefinedInDegrees || isCotUndefinedInRadians) {
+                    result = "無效的值 (cot 0 或 180度 未定義)";
+                } else {
+                    switch (functionSelect) {
+                        case "sin":
+                            result = Math.sin(angleInRadians);
+                            break;
+                        case "cos":
+                            result = Math.cos(angleInRadians);
+                            break;
+                        case "tan":
+                            result = Math.tan(angleInRadians);
+                            break;
+                        case "csc":
+                            result = 1 / Math.sin(angleInRadians);
+                            break;
+                        case "sec":
+                            result = 1 / Math.cos(angleInRadians);
+                            break;
+                        case "cot":
+                            result = Math.tan(angleInRadians) === 0 ? "無限大 (Infinity)" : 1 / Math.tan(angleInRadians);
+                            break;
+                        default:
+                            result = "無效的函數";
+                            break;
+                    }
+
+                    if (typeof result === "number") {
+                        result = parseFloat(result.toFixed(10));
+                        if (Math.abs(result) < 1e-10) {
+                            result = 0.0000000000;
+                        }
+                    }
+                }
+
+                trigResultSpan.textContent = result;
+            };
+
+            angleInput.addEventListener("input", calculateTrigonometry);
+            trigFunctionSelect.addEventListener("change", calculateTrigonometry);
+            angleUnitSelect.addEventListener("change", calculateTrigonometry);
+
+            document.getElementById("copy-button").addEventListener("click", function() {
+                let resultText = trigResultSpan.textContent;
+                navigator.clipboard.writeText(resultText).then(function() {
+                    let copyMessage = document.getElementById("copy-message");
+                    copyMessage.style.display = "inline";
+                    setTimeout(function() {
+                        copyMessage.style.display = "none";
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('複製失敗: ', err);
+                });
+            });
         });
-    });
-});
+        const operators = [
+            '加法: +',
+            '減法: -',
+            '乘法: *',
+            '除法: /',
+            '整除: //',
+            '餘數: %',
+            '次方: **',
+            '括號: ()',
+            '絕對值: abs()',
+            '當使用 // 時，記得運算子前後要加空格',
+            '推薦使用英文輸入法，較不會有半全形問題',
+            //
+            'Math.E: 自然對數的底數，約為 2.71828。',
+            'Math.PI: 圓周率，約為 3.14159。',
+            'Math.SQRT2: 2 的平方根，約為 1.41421。',
+            'Math.SQRT1_2: 1/2 的平方根，約為 0.70711。',
+            'Math.LN2: 2 的自然對數，約為 0.69315。',
+            'Math.LN10: 10 的自然對數，約為 2.30258。',
+            'Math.LOG2E: 以 2 為底的 e 的對數，約為 1.44269。',
+            'Math.LOG10E: 以 10 為底的 e 的對數，約為 0.43429。',
+            'Math.abs(x)：返回 x 的絕對值。',
+            'Math.ceil(x)：返回大於或等於 x 的最小整數。',
+            'Math.floor(x)：返回小於或等於 x 的最大整數。',
+            //
+            'Math.round(x)：四捨五入 x。',
+            'Math.random()：返回介於 0（包含）和 1（不包含）之間的隨機數。',
+            'Math.sqrt(x)：返回 x 的平方根。',
+            'Math.log(x)：返回 x 的自然對數。',
+            'Math.log10(x)：返回 x 的以 10 為底的對數。',
+            'Math.log2(x)：返回 x 的以 2 為底的對數。',
+            'Math.sin(x)：返回 x 的正弦（x 為弧度）。',
+            'Math.cos(x)：返回 x 的餘弦（x 為弧度）。',
+            'Math.tan(x)：返回 x 的正切（x 為弧度）。',
+            'Math.min(value1, value2, ..., valueN)：返回最小值。',
+            'Math.max(value1, value2, ..., valueN)：返回最大值。',
+            //
+            'Math.pow(base, exponent)：返回 base 的 exponent 次方。',
+            'Number.MAX_VALUE: JavaScript 能夠表示的最大數值，約為 1.7976931348623157e+308。',
+            'Number.MIN_VALUE: JavaScript 能夠表示的最小正數，約為 5e-324。',
+            'Number.MAX_SAFE_INTEGER: JavaScript 中最大的安全整數，2**53-1，值為 9007199254740991。',
+            'Number.MIN_SAFE_INTEGER: JavaScript 中最小的安全整數，-2**53+1，值為 -9007199254740991。',
+            'Number.NaN: 代表不是一個數字(Not-a-Number)。',
+            'Number.POSITIVE_INFINITY: 表示正無窮大。',
+            'Number.NEGATIVE_INFINITY: 表示負無窮大。',
+            '邏輯「或」: ||',
+            '邏輯「和」: &&',
+            '邏輯非(NOT): !',
+            //
+            '大於或等於: >=' ,
+            '小於或等於: <=' ,
+            '大於: >',
+            '少於: <',
+            '不等於: !=',
+            '等於: ==',
+            'typeof: 返回變數的類型。',
+            'instanceof: 檢查一個對象是否是另一個對象'
+            //8
+            
+        ];
 
-function showPopup() {
-    document.getElementById("popup").style.display = "block";
-    document.getElementById("popup-overlay").style.display = "block";
-}
+        const itemsPerPage = 11; // 每頁顯示的項目數量
+        let currentPage = 1; // 當前頁碼
 
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-    document.getElementById("popup-overlay").style.display = "none";
-}
-function resetPage() {
-            location.reload();
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('popup-overlay').style.display = 'block';
+            renderOperators();
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
+
+        function renderOperators() {
+            const list = document.getElementById('operator-list');
+            list.innerHTML = ''; // 清空列表
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, operators.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const listItem = document.createElement('li');
+                listItem.textContent = operators[i];
+                list.appendChild(listItem);
+            }
+
+            // 控制分頁按鈕的可用性
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = endIndex >= operators.length;
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderOperators();
+        }
+
+        function resetPage() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.querySelectorAll('.result span').forEach(span => span.textContent = ''); // 清空結果區域
         }
     </script>
 </body>
