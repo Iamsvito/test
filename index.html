@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>英語測驗</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px 5px 10px 0;
+      border: none;
+      border-radius: 5px;
+      background-color: #1976d2;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #quizSection {
+      display: none;
+    }
+
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      background-color: #4caf50;
+    }
+
+    #nextBtn {
+      background-color: #ff9800;
+    }
+
+    #clearBtn {
+      background-color: #e53935;
+    }
+
+    #submitBtn {
+      background-color: #009688;
+    }
+
+    #wrongBtn {
+      background-color: #9c27b0;
+    }
+
+    #clearWrongBtn {
+      background-color: #880e4f;
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+        font-size: 18px;
+      }
+
+      button {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>🌟 英語測驗系統</h2>
+
+  <div id="inputSection">
+    <label for="modeSelect">選擇題型：</label>
+    <select id="modeSelect">
+      <option value="cn2en">中翻英</option>
+      <option value="en2cn">英翻中</option>
+      <option value="spell">拼寫題</option>
+    </select>
+    <p id="lastScore" style="color: gray;"></p>
+
+    <p>請輸入題庫資料（每行格式為：英文,中文）：</p>
+    <textarea id="dataInput" placeholder="如：detergent,洗衣粉"></textarea>
+    <button onclick="clearData()" id="clearBtn">清除所有資料</button>
+    <button onclick="clearWrongList()" id="clearWrongBtn">清除錯題清單</button>
+    <label for="timeLimitInput">每題倒數時間（秒）：</label>
+    <input type="number" id="timeLimitInput" min="5" max="60" placeholder="例如：15" />
+    <button onclick="startQuiz()">開始測驗</button>
+    <button onclick="startWrongQuiz()" id="wrongBtn">只練錯題</button>
+  </div>
+
+  <div id="quizSection">
+    <p id="progress"></p>
+    <p id="timer"></p>
+    <p id="question" style="font-weight: bold;"></p>
+    <div id="options"></div>
+
+    <input id="inputAnswer" type="text" placeholder="請輸入英文拼字..." style="display:none;" />
+    <button id="submitBtn" style="display:none;">送出</button>
+
+    <p id="feedback"></p>
+    <button id="nextBtn" style="display:none;">下一題</button>
+    <button id="restartBtn" onclick="location.reload()" style="display:none;">重新測驗</button>
+  </div>
+
+  <script>
+    let wordPairs = [], currentQuestion = 0, score = 0, totalQuestions = 10;
+    let correctAnswer = "", quizMode = "cn2en", timer, timeLeft = 15;
+
+    function startQuiz() {
+      const input = document.getElementById("dataInput").value.trim();
+      localStorage.setItem("vocabData", input);
+      quizMode = document.getElementById("modeSelect").value;
+
+      let customTime = parseInt(document.getElementById("timeLimitInput").value);
+      timeLeft = (isNaN(customTime) || customTime < 5) ? 15 : customTime;
+
+      const lines = input.split("\n").filter(line => line.includes(","));
+      wordPairs = shuffle(lines.map(line => {
+        const [eng, chn] = line.split(",");
+        return { eng: eng.trim(), chn: chn.trim() };
+      }));
+
+      if (wordPairs.length < 4) {
+        alert("請至少輸入 4 組以上的資料！");
+        return;
+      }
+
+      totalQuestions = Math.min(10, wordPairs.length);
+      wordPairs = wordPairs.slice(0, totalQuestions);
+      score = 0;
+      currentQuestion = 0;
+
+      document.getElementById("inputSection").style.display = "none";
+      document.getElementById("quizSection").style.display = "block";
+      generateQuestion();
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function generateQuestion() {
+      timeLeft = parseInt(document.getElementById("timeLimitInput").value) || 15;
+
+      const questionElem = document.getElementById("question");
+      const optionsElem = document.getElementById("options");
+      const feedbackElem = document.getElementById("feedback");
+      const progressElem = document.getElementById("progress");
+      const nextBtn = document.getElementById("nextBtn");
+      const inputAnswer = document.getElementById("inputAnswer");
+      const submitBtn = document.getElementById("submitBtn");
+
+      feedbackElem.textContent = "";
+      optionsElem.innerHTML = "";
+      nextBtn.style.display = "none";
+      inputAnswer.style.display = "none";
+      submitBtn.style.display = "none";
+      inputAnswer.value = "";
+
+      progressElem.textContent = `第 ${currentQuestion + 1} 題 / 共 ${totalQuestions} 題`;
+
+      const correct = wordPairs[currentQuestion];
+
+      if (quizMode === "spell") {
+        correctAnswer = correct.eng.toLowerCase();
+        questionElem.textContent = `請拼出「${correct.chn}」的英文：`;
+        inputAnswer.style.display = "block";
+        submitBtn.style.display = "inline";
+        inputAnswer.disabled = false;
+        submitBtn.disabled = false;
+        inputAnswer.focus();
+
+        submitBtn.onclick = () => {
+          const userInput = inputAnswer.value.trim().toLowerCase();
+          clearInterval(timer);
+          if (userInput === correctAnswer) {
+            feedbackElem.textContent = "✅ 正確！";
+            feedbackElem.style.color = "green";
+            score++;
+            removeFromWrongList(correct);
+          } else {
+            feedbackElem.textContent = `❌ 錯誤，正確答案是：${correctAnswer}`;
+            feedbackElem.style.color = "red";
+            saveWrong(correct);
+          }
+          inputAnswer.disabled = true;
+          submitBtn.disabled = true;
+          nextBtn.style.display = "inline";
+        };
+      } else {
+        let options = [];
+        if (quizMode === "cn2en") {
+          correctAnswer = correct.eng;
+          questionElem.textContent = `「${correct.chn}」的英文是？`;
+          options = [correct.eng];
+          while (options.length < 4) {
+            const rand = wordPairs[Math.floor(Math.random() * wordPairs.length)].eng;
+            if (!options.includes(rand)) options.push(rand);
+          }
+        } else {
+          correctAnswer = correct.chn;
+          questionElem.textContent = `What is the meaning of "${correct.eng}"？`;
+          options = [correct.chn];
+          while (options.length < 4) {
+            const rand = wordPairs[Math.floor(Math.random() * wordPairs.length)].chn;
+            if (!options.includes(rand)) options.push(rand);
+          }
+        }
+
+        shuffle(options);
+        options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.onclick = () => {
+            clearInterval(timer);
+            if (opt === correctAnswer) {
+              feedbackElem.textContent = "✅ 正確！";
+              feedbackElem.style.color = "green";
+              score++;
+              removeFromWrongList(correct);
+            } else {
+              feedbackElem.textContent = `❌ 錯誤，正確答案是：${correctAnswer}`;
+              feedbackElem.style.color = "red";
+              saveWrong(correct);
+            }
+            nextBtn.style.display = "inline";
+          };
+          optionsElem.appendChild(btn);
+        });
+      }
+
+      document.getElementById("timer").textContent = `⏳ 倒數計時：${timeLeft} 秒`;
+      timer = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById("timer").textContent = `⏰ 時間到！`;
+          feedbackElem.textContent = `⏰ 時間到！正確答案是：${correctAnswer}`;
+          feedbackElem.style.color = "orange";
+          saveWrong(correct);
+          nextBtn.style.display = "inline";
+          return;
+        }
+
+        document.getElementById("timer").textContent = `⏳ 倒數計時：${timeLeft} 秒`;
+        timeLeft--;
+      }, 1000);
+    }
+
+    document.getElementById("nextBtn").onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < totalQuestions) {
+        generateQuestion();
+      } else {
+        document.getElementById("question").textContent = "🎉 測驗結束！";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("inputAnswer").style.display = "none";
+        document.getElementById("submitBtn").style.display = "none";
+        document.getElementById("timer").textContent = "";
+        const result = `你答對了 <strong>${score}/${totalQuestions}</strong> 題，正確率 ${(score / totalQuestions * 100).toFixed(1)}%`;
+        document.getElementById("feedback").innerHTML = result;
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("progress").textContent = "";
+        document.getElementById("restartBtn").style.display = "inline";
+        localStorage.setItem("lastScore", result);
+        showLastScore();
+      }
+    };
+
+    function clearData() {
+      localStorage.removeItem("vocabData");
+      localStorage.removeItem("lastScore");
+      localStorage.removeItem("wrongList");
+      document.getElementById("dataInput").value = "";
+      document.getElementById("lastScore").textContent = "";
+      alert("已清除所有儲存資料！");
+    }
+
+    function clearWrongList() {
+      localStorage.removeItem("wrongList");
+      alert("錯題清單已清除！");
+    }
+
+    function saveWrong(pair) {
+      let wrongList = JSON.parse(localStorage.getItem("wrongList") || "[]");
+      if (!wrongList.find(p => p.eng === pair.eng && p.chn === pair.chn)) {
+        wrongList.push(pair);
+        localStorage.setItem("wrongList", JSON.stringify(wrongList));
+      }
+    }
+
+    function removeFromWrongList(pair) {
+      let wrongList = JSON.parse(localStorage.getItem("wrongList") || "[]");
+      wrongList = wrongList.filter(p => !(p.eng === pair.eng && p.chn === pair.chn));
+      localStorage.setItem("wrongList", JSON.stringify(wrongList));
+    }
+
+    function startWrongQuiz() {
+      const storedWrong = localStorage.getItem("wrongList");
+      if (!storedWrong) {
+        alert("目前沒有錯題可練習！");
+        return;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(storedWrong);
+      } catch (e) {
+        alert("錯誤的錯題資料格式！");
+        return;
+      }
+
+      if (!Array.isArray(parsed) || parsed.length < 4) {
+        alert("錯題資料不足，至少需 4 題才能開始！");
+        return;
+      }
+
+      wordPairs = shuffle(parsed.filter(p => p.eng && p.chn));
+      totalQuestions = wordPairs.length;
+      score = 0;
+      currentQuestion = 0;
+      quizMode = document.getElementById("modeSelect").value;
+
+      document.getElementById("inputSection").style.display = "none";
+      document.getElementById("quizSection").style.display = "block";
+      generateQuestion();
+    }
+
+    function showLastScore() {
+      const savedScore = localStorage.getItem("lastScore");
+      if (savedScore) {
+        document.getElementById("lastScore").innerHTML = `📊 上次測驗成績：${savedScore}`;
+      }
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem("vocabData");
+      if (saved) {
+        document.getElementById("dataInput").value = saved;
+      }
+      showLastScore();
+    };
+  </script>
+</body>
+</html>
